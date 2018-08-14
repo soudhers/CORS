@@ -11,7 +11,7 @@
             function handleCORSRequest(reqType, url){
                 const xhr = new XMLHttpRequest();
                 if("withCredentials" in xhr){
-                    xhr.open(reqType, url, true);
+                    xhr.open(reqType, url, true, null, null); //true->async, uid, pwd
                 }else if (typeof XDomainRequest != "undefined"){
                     xhr = new XDomainRequest();
                     xhr.open(reqType, url);
