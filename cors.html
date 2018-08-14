@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<!--
+    1. By default browser may provide default security settings which will disable CORS.
+    Enable CORS by disabling default security. Eg: start chrome using command:
+    'chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security'
+    2. Load this page to see CORS in action
+-->
+<html>
+    <head>
+        <script>
+            function handleCORSRequest(reqType, url){
+                const xhr = new XMLHttpRequest();
+                if("withCredentials" in xhr){
+                    xhr.open(reqType, url, true);
+                }else if (typeof XDomainRequest != "undefined"){
+                    xhr = new XDomainRequest();
+                    xhr.open(reqType, url);
+                }else{
+                    xhr = null;
+                    console.log('CORS is not supported for this browser...');
+                    return;
+                }
+                xhr.onload = () => {
+                    const text = xhr.responseText;
+                    const title = text.replace(/.*<title>(.*)<\/title>.*/g, "$1");
+                    console.log('Title obtained as: ', title);
+                }
+                xhr.onerror = (ErrorEv) => alert('ERROR: ', ErrorEv);
+                xhr.send();
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="handleCORSRequest('GET', 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html')">InitCORSReq</button>
+    </body>
+</html>
